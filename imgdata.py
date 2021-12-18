@@ -1,17 +1,7 @@
-'''
-Assignment 2
-
-author  : Shan Luo
-created : 20/11/20 5:30 PM
-'''
-
 import os
-import sys
 from torch.utils.data import Dataset
 import numpy as np
-import scipy.io as scio
 from skimage import io
-import pdb
 
 
 
@@ -38,16 +28,15 @@ class imageDataset(Dataset):
 
         img_folder = self.imPath[idx].split('/')[-2]
         if img_folder =='faces':
-            label = np.zeros((1, 1), dtype=int)
+            label = 0
         elif img_folder == 'dog':
-            label = np.zeros((1, 1), dtype=int)+1
+            label = 1
         elif img_folder == 'airplanes':
-            label = np.zeros((1, 1), dtype=int)+2
+            label = 2
         elif img_folder == 'keyboard':
-            label = np.zeros((1, 1), dtype=int)+3
+            label = 3
         elif img_folder == 'cars':
-            label = np.zeros((1, 1), dtype=int)+4
-
+            label = 4
 
         img = np.zeros([3,im.shape[0],im.shape[1]]) # reshape the image from HxWx3 to 3xHxW
         img[0,:,:] = im[:,:,0]
@@ -61,7 +50,7 @@ class imageDataset(Dataset):
 
         return{
             'imNorm': imNorm.astype(np.float32),
-            'label':np.transpose(label.astype(np.float32))                  #image label
+            'label': label                #image label
             }
 
 class DefaultTrainSet(imageDataset):
