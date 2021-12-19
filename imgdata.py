@@ -4,7 +4,6 @@ import numpy as np
 from skimage import io
 
 
-
 class imageDataset(Dataset): 
 
     def __init__(self, root_dir, file_path, imSize = 250, shuffle=False):
@@ -13,13 +12,10 @@ class imageDataset(Dataset):
         self.imSize = imSize
         self.file_path=file_path
 
-
     def __len__(self):
         return len(self.imPath)
 
     def __getitem__(self, idx):
-    	# print(self.root_dir)
-    	# print(self.imPath[idx])
         im = io.imread(os.path.join(self.root_dir, self.imPath[idx]))  # read the image
 
         if len(im.shape) < 3: # if there is grey scale image, expand to r,g,b 3 channels
@@ -27,7 +23,7 @@ class imageDataset(Dataset):
             im = np.repeat(im,3,axis = 2)
 
         img_folder = self.imPath[idx].split('/')[-2]
-        if img_folder =='faces':
+        if img_folder == 'faces':
             label = 0
         elif img_folder == 'dog':
             label = 1
@@ -50,22 +46,19 @@ class imageDataset(Dataset):
 
         return{
             'imNorm': imNorm.astype(np.float32),
-            'label': label                #image label
+            'label': label
             }
+
 
 class DefaultTrainSet(imageDataset):
     def __init__(self, **kwargs):
-         #  img_list_train.npy that contains the path of the training images is provided 
         default_path = 'Assignment2_SupplementaryMaterials/img_list_train.npy'
         root_dir = 'Assignment2_SupplementaryMaterials/data'
         super(DefaultTrainSet, self).__init__(root_dir, file_path=default_path, imSize = 250,**kwargs)
 
 
 class DefaultTestSet(imageDataset):
-
     def __init__(self, **kwargs):
-        script_folder = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        #  img_list_test.npy that contains the path of the testing images is provided
         default_path = 'Assignment2_SupplementaryMaterials/img_list_test.npy'
         root_dir = 'Assignment2_SupplementaryMaterials/data'
         super(DefaultTestSet, self).__init__(root_dir, file_path=default_path, imSize = 250,**kwargs)
