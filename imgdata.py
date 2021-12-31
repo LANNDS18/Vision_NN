@@ -6,7 +6,7 @@ from skimage import io
 
 class imageDataset(Dataset):
 
-    def __init__(self, root_dir, file_path, imSize=250, shuffle=False):
+    def __init__(self, root_dir, file_path, imSize=250):
         self.imPath = np.load(file_path)
         self.root_dir = root_dir
         self.imSize = imSize
